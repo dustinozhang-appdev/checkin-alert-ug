@@ -1,14 +1,4 @@
 <div class="row mb-3">
-  <div class="col-md-12">
-    <h1>
-      List of all flights
-    </h1>
-  </div>
-</div>
-
-<hr>
-
-<div class="row mb-3">
   <div class="col-md-8 offset-md-2">
     <h2>
       Add a new flight
@@ -16,27 +6,19 @@
 
     <form action="/insert_flight" method="post">
       <div class="form-group">
-        <label for="departs_at_box">
-          Departs at
-        </label>
-
-        <input type="datetime-local" id="departs_at_box" name="query_departs_at" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label for="airline_box">
-          Airline
-        </label>
-
-        <input type="text" id="airline_box" name="query_airline" class="form-control">
-      </div>
-
-      <div class="form-group">
         <label for="description_box">
           Description
         </label>
 
         <input type="text" id="description_box" name="query_description" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="departs_at_box">
+          Departs at
+        </label>
+
+        <input type="datetime-local" id="departs_at_box" name="query_departs_at" class="form-control">
       </div>
 
       <div class="form-group">
@@ -54,6 +36,7 @@
   </div>
 </div>
 
+<h2>Upcoming Flights</h2>
 <hr>
 <div class="row mb-3">
   <div class="col-md-12">
@@ -65,10 +48,6 @@
 
         <th>
           Departs at
-        </th>
-
-        <th>
-          Airline
         </th>
 
         <th>
@@ -99,18 +78,100 @@
         </th>
       </tr>
 
-      <% @flights.each do |flight| %>
+      <% @upcoming_flights.each do |flight| %>
       <tr>
         <td>
           <%= flight.id %>
         </td>
 
         <td>
-          <%= flight.departs_at %>
+          <%= flight.departs_at.strftime("%b %e, %y %Z") %>
         </td>
 
         <td>
-          <%= flight.airline %>
+          <%= flight.description %>
+        </td>
+
+        <td>
+          <%= flight.user_id %>
+        </td>
+
+        <td>
+          <%= flight.message_sent %>
+        </td>
+
+        <td>
+          <%= flight.locator %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(flight.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(flight.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/flights/<%= flight.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<h2>Past Flights</h2>
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Departs at
+        </th>
+
+        <th>
+          Description
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Message sent
+        </th>
+
+        <th>
+          Locator
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @past_flights.each do |flight| %>
+      <tr>
+        <td>
+          <%= flight.id %>
+        </td>
+
+        <td>
+          <%= flight.departs_at.strftime("%b %e, %y %Z") %>
         </td>
 
         <td>

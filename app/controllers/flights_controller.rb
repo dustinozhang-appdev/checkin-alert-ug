@@ -1,7 +1,7 @@
 class FlightsController < ApplicationController
   def index
-    @flights = Flight.all.order({ :created_at => :desc })
-
+    @upcoming_flights = @current_user.flights.where("departs_at > ?", Time.now).order({:departs_at => :asc})
+    @past_flights = @current_user.flights.where("departs_at < ?", Time.now).order({:departs_at => :desc})
     render({ :template => "flights/index.html.erb" })
   end
 
@@ -15,9 +15,9 @@ class FlightsController < ApplicationController
   def create
     @flight = Flight.new
     @flight.departs_at = params.fetch("query_departs_at")
-    @flight.airline = params.fetch("query_airline")
     @flight.description = params.fetch("query_description")
     @flight.locator = params.fetch("query_locator")
+    @flight.user_id = session[:user_id]
 
     if @flight.valid?
       @flight.save

@@ -14,4 +14,7 @@
 #
 
 class Flight < ApplicationRecord
+  validates :departs_at, :presence => true
+  validates :user_id, :presence => true
+
 end
